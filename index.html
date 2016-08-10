@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Scribbler</title>
+    <link rel="stylesheet" type="text/css" href="/datascribbler.css?0.9.0.0">
+    <script type="text/javascript" src="/jquery-2.2.2.min.js"></script>
+    <script type="text/javascript" src="/jsonpath-s3u.js?0.9.0.0"></script>
+    <script type="text/javascript" src="/bowser.min.js?1.4.3"></script>
+    
+    <link rel="stylesheet" href="/fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+    <script type="text/javascript" src="/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <link rel="stylesheet" href="/fancybox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5" type="text/css" media="screen" />
+    <script type="text/javascript" src="/fancybox/source/helpers/jquery.fancybox-buttons.js?v=1.0.5"></script>
+    <script type="text/javascript" src="/fancybox/source/helpers/jquery.fancybox-media.js?v=1.0.6"></script>
+    <link rel="stylesheet" href="/fancybox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7" type="text/css" media="screen" />
+    <script type="text/javascript" src="/fancybox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+    
+    <script type="text/javascript" src="/datascribbler.js?0.9.0.0"></script>
+</head>
+<body>
+
+<div class="header header-name">
+<div class="logo"><div class="logo-line1"><a href="/" target="_blank">Data</a></div><div class="logo-line2"><a href="/" target="_blank">Scribbler</a></div></div>
+<div class="tagline">Real-time collaborative data editing. No registration required.<br/>JSON, JSONPath, calculation functions, and three collection types.<br/>Like spreadsheets, but for hierarchical data.</div>
+<div class="header-link header-link-about"><a href="javascript:void(0)">About</a></div>
+<div class="header-link header-link-faq"><a href="javascript:void(0)">FAQ</a></div>
+<div class="header-link header-link-source"><a href="https://github.com/jeff-tyrrill/data-scribbler" target="_blank">GitHub</a></div>
+</div>
+<div class="header header-menu">
+    <div class="menu menu-button menu-share" data-tooltip="share"></div>
+    <div class="menu menu-button menu-cookbook" data-tooltip="cookbook"></div>
+    <div class="menu menu-button menu-clear" data-tooltip="clear"></div>
+    <div class="menu menu-button menu-collapse" data-tooltip="collapse"></div>
+    <div class="menu menu-button menu-expand" data-tooltip="expand"></div>
+    <div class="menu menu-button menu-wrap" data-tooltip="wrap"></div>
+    <div class="menu menu-button menu-undo" data-tooltip="undo"></div>
+    <div class="menu menu-button menu-redo" data-tooltip="redo"></div>
+    <div class="menu menu-revision" data-tooltip="revision"><div class="revision-current"></div><div class="menu-revision-dropdown"></div></div>
+    <div class="menu menu-name" data-tooltip="name"><input type="text" value="" placeholder="Your name" /></div>
+</div>
+<div class="header header-notice" style="display: none;">
+</div>
+
+<div class="header-notice-text-read-only" style="display: none;">This document is view-only. If you make changes, a copy of the document will be made.</div>
+<div class="header-notice-text-private" style="display: none;">You are in private mode. No document data will be sent to the server or saved, and collaboration is not available.</div>
+
+<div class="tooltip" style="display: none;">
+</div>
+
+<div class="dropdown-mask" style="display: none;">
+    <div class="dropdown dropdown-share">
+        <div class="link link-notice"><em>Start editing your document to create a share link for real-time collaboration</em><br/></div>
+        <div class="link link-edit" style="display: none;"><a href="javascript:void(0)" target="_blank">Share link for real-time collaboration</a></div>
+        <div class="link link-view" style="display: none;"><a href="javascript:void(0)" target="_blank">Share link for real-time view-only mode</a></div>
+        <div class="link link-clone" style="display: none;"><a href="javascript:void(0)" target="_blank">Clone this document</a></div>
+        <div class="link link-private"><a href="/private/" target="_blank">Open new window in private mode</a></div>
+    </div>
+</div>
+
+<div class="dropdown-mask" style="display: none;">
+    <div class="dropdown dropdown-cookbook">
+        <div class="cookbook" data-cookbook-recipe="shopping list"><a href="javascript:void(0)">Shopping list</a></div>
+        <div class="cookbook" data-cookbook-recipe="computing prime numbers"><a href="javascript:void(0)">Computing prime numbers</a></div>
+        <div class="cookbook" data-cookbook-recipe="JSONPath examples"><a href="javascript:void(0)">JSONPath examples</a></div>
+    </div>
+</div>
+
+<div class="dropdown-mask" style="display: none;">
+    <div class="dropdown dropdown-revision"></div>
+</div>
+
+<div class="loading-mask" style="display: none;">
+</div>
+
+<div class="scroll scroll-left"></div>
+<div class="scroll scroll-right"></div>
+
+<div class="columns">
+</div>
+
+<div class="status" style="display: none;">
+    <div class="status-text"></div>
+    <div style="display: none;" class="button-caption formula-arguments-explain">Now selecting arguments for the <span class="status-formula-type"></span> formula. Click a cell to use that element in the formula.<br/><br/>
+        Number of arguments: <span class="status-formula-arguments-count"></span><br/><br/>
+        Non-permanent elements (children of computed elements and children of collections of type "set") cannot be selected.
+    </div>
+    <div style="display: none;" class="formula-button-done"><input type="button" name="done" value="Done" /></div>
+    <p style="display: none;" class="button-caption formula-button-done-caption">Additional arguments are optional. Click "Done" to complete formula.</p>
+    <div style="display: none;" class="formula-button-cancel"><input type="button" name="cancel" value="Cancel" /></div>
+    <div style="display: none;" class="formula-button-move"><input type="button" name="move" value="Move this box" /></div>
+</div>
+
+<div class="status-center" style="display: none;">
+</div>
+
+<div class="status-center-conflict-wrapper" style="display: none;">
+    <div class="status-center-conflict">A conflict occurred with another user's change. Your action was undone.</div>
+</div>
+<div class="status-center-clear-wrapper" style="display: none;">
+    <div class="status-center-clear">All data cleared.<br/><br/>(If this was a mistake, you can undo.)</div>
+</div>
+<div class="status-center-cloned-wrapper" style="display: none;">
+    <div class="status-center-cloned">Document cloned.</div>
+</div>
+<div class="status-center-forked-wrapper" style="display: none;">
+    <div class="status-center-forked">You are now editing your own personal copy of the document.<br/><br/>Changes from other users will no longer appear.</div>
+</div>
+<div class="status-center-loading-wrapper" style="display: none;">
+    <div class="status-center-loading">Loading&hellip;</div>
+</div>
+<div class="status-center-cookbook-wrapper" style="display: none;">
+    <div class="status-center-cookbook">Cookbook recipe added as additional columns.</div>
+</div>
+<div class="status-center-toobig-wrapper" style="display: none;">
+    <div class="status-center-toobig">Your last action exceeds the server's maximum size for an action or the document, and has been undone.<br/><br/>(No size limits apply in private mode, except for your browser's performance limits.)</div>
+</div>
+
+<div class="prompt-wrapper" style="display: none;">
+
+<div class="prompt prompt-key">
+    <p><label>
+        <span class="prompt-key-collision" style="display: none;">Key collision. Please enter dictionary key:</span>
+        <span class="prompt-key-no-collision" style="display: none;">Dictionary key:</span>
+        <span class="prompt-key-rename" style="display: none;">Rename key:</span>
+        <span class="prompt-key-rename-collision" style="display: none;">Key already exists. Rename key:</span>
+        <br/><input type="text" name="key" />
+    </label></p>
+    <p><input type="button" name="use" value="OK" /></p>
+</div>
+
+<div class="prompt prompt-add">
+    <p style="display: none;" class="prompt-add-status"></p>
+    <p style="display: none;" class="prompt-add-key"><label>Key:<br/><textarea type="text" name="key"></textarea></label></p>
+    <p style="display: none;" class="prompt-add-value"><label>Value:<br/><textarea type="text" name="value"></textarea></label></p>
+    <p style="display: none;" class="prompt-add-type-explanation"></p>
+    <p style="display: none;" class="prompt-add-collision">Key collision. Please change key(s).</p>
+    <p style="display: none;" class="prompt-add-key-mismatch">The number of keys and the number of values do not match.</p>
+    <div style="display: none;" class="prompt-add-type-radio">
+        Data type:<br/>
+        <div style="display: none;" class="prompt-add-type-radio-auto"><label><input type="radio" name="type" value="auto" />Auto</label></div>
+        <div style="display: none;" class="prompt-add-type-radio-string-multi"><label><input type="radio" name="type" value="string-multi" />Multiple string elements</label></div>
+        <div style="display: none;" class="prompt-add-type-radio-string-single"><label><input type="radio" name="type" value="string-single" /><span style="display: none;" class="prompt-add-type-radio-string-single-add">Single string</span><span style="display: none;" class="prompt-add-type-radio-string-single-change">String</span> element</label></div>
+    </div>
+    <p style="display: none;" class="prompt-add-button-use"><input type="button" name="use" value="Use" /></p>
+    <p style="display: none;" class="prompt-add-button-arguments"><input type="button" name="arguments" value="Change current formula arguments" /></p>
+    <p style="display: none;" class="prompt-add-button-formula"><input type="button" name="formula" value="Pick formula" /></p>
+    <p style="display: none;" class="prompt-add-button-delete-contents"><input type="button" name="delete-contents" value="Delete collection contents" /></p>
+    <p style="display: none;" class="prompt-add-button-transform"><input type="button" name="transform" value="Use formula to transform data in place" /></p>
+    <p style="display: none;" class="prompt-add-button-convert"><input type="button" name="convert" value="Convert formula to values" /></p>
+    <p style="display: none;" class="prompt-add-button-json"><input type="button" name="json" value="Export values as JSON" /></p>
+</div>
+
+<div class="prompt prompt-add-simple">
+    <p><input type="button" name="list" value="Empty list" /></p>
+    <p class="button-caption">[] &ndash; Ordered collection of values.</p>
+    <p><input type="button" name="set" value="Empty set" /></p>
+    <p class="button-caption">() &ndash; Unordered collection of unique values.</p>
+    <p><input type="button" name="dictionary" value="Empty dictionary" /></p>
+    <p class="button-caption">{} &ndash; Unordered collection of pairs of unique keys and their associated values.</p>
+    <p><input type="button" name="other" value="Value or formula" /></p>
+    <p class="button-caption">Enter a value, list of values (for multiple columns), JSON, or choose a formula for a calculated column.</p>
+</div>
+
+<div class="prompt prompt-formula">
+    <p>Choose formula:</p>
+    <div class="formula-chooser"></div>
+</div>
+
+<div class="prompt prompt-formula-arguments">
+    <div class="prompt-formula-arguments-fields">
+    </div>
+    <p><input type="button" name="use" value="OK" /></p>
+    <p><input type="button" name="cancel" value="Cancel" /></p>
+</div>
+
+<div class="prompt prompt-export">
+    <p><label>Data:<br/><textarea type="text" name="export" class="large"></textarea></label></p>
+    <p style="display: none;" class="prompt-export-sets">Sets changed to arrays.</p>
+    <p style="display: none;" class="prompt-export-undefined">Instances of undefined changed to null. (Undefined is not a JSON data type.)</p>
+</div>
+
+<div class="prompt prompt-about">
+    <h1 class="first">Data Scribbler</h1>
+    <p>by Jeff Tyrrill</p>
+    <p>Contact: <a href="mailto:info@datascribbler.com">Email</a> | <a href="https://twitter.com/datascribbler" target="_blank">Twitter</a> | <a href="https://github.com/jeff-tyrrill/data-scribbler" target="_blank">GitHub</a></p>
+    <p style="font-size: smaller;">v0.9.0.0</p>
+    <h1>License and attribution</h1>
+    <p><a href="https://github.com/jeff-tyrrill/data-scribbler" target="_blank">Data Scribbler</a> &ndash; Copyright 2016 Jeff Tyrrill &ndash; <a href="https://github.com/jeff-tyrrill/data-scribbler/blob/master/LICENSE" target="_blank">MIT License</a></p>
+    <p><a href="https://jquery.com/" target="_blank">jQuery</a> &ndash; Copyright jQuery Foundation &ndash; <a href="https://jquery.org/license/" target="_blank">MIT License</a></p>
+    <p><a href="http://fancyapps.com/fancybox/" target="_blank">fancyBox</a> &ndash; Copyright 2012 Janis Skarnelis &ndash; <a href="http://fancyapps.com/fancybox/#license" target="_blank">CC BY-NC 3.0</a> (Single Domain License)</p>
+    <p><a href="https://github.com/ded/bowser" target="_blank">Bowser</a> &ndash; Copyright 2015 Dustin Diaz &ndash; <a href="https://github.com/ded/bowser/blob/master/LICENSE" target="_blank">MIT License</a></p>
+    <p><a href="http://goessner.net/articles/JsonPath/" target="_blank">JSONPath</a> &ndash; Copyright 2007 Stefan Goessner &ndash; <a href="https://code.google.com/archive/p/jsonpath/" target="_blank">MIT License</a></p>
+    <p><a href="https://github.com/s3u/JSONPath" target="_blank">JSONPath Plus</a> &ndash; Contributors: Prof. Gössner, Subbu Allamaraju, Mike Brevoort, Robert Krahn, Brett Zamir, Richard Schneider &ndash; <a href="https://github.com/s3u/JSONPath" target="_blank">MIT License</a></p>
+    <p><a href="https://design.google.com/icons/" target="_blank">Material design icons</a> &ndash; Google &ndash; <a href="https://github.com/google/material-design-icons/blob/master/LICENSE" target="_blank">CC BY 4.0</a></p>
+</div>
+
+<div class="prompt prompt-faq">
+    <h1 class="first">FAQ</h1>
+    <p>Website owner: Please replace this text with your FAQs.</p>
+</div>
+
+<div class="prompt prompt-source">
+    <p></p>
+</div>
+
+</div>
+
+</body>
+</html>

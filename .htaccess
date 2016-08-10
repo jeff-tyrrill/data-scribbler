@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+    RewriteRule "^docs/.+$" "/" [L,NC]
+    RewriteRule "^docs/.+$/clone" "/" [L,NC]
+    RewriteRule "^private/" "/" [L,NC]
+    RewriteRule "^data/.+/status.json$" "/" [L,NC]
+</IfModule>
