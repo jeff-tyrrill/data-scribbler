@@ -1481,7 +1481,7 @@ var calculateSetLogic = function(dataA, dataB, numArguments, operation) {
         
         var newCollection = [];
         newCollection.collectionType = 'set';
-        newCollection.isExpanded = dataA.isExpanded || dataB.isExpanded;
+        newCollection.isExpanded = dataA.isExpanded || (numArguments == 2 && dataB.isExpanded);
         newCollection.dataLink = generateAtomId();
         $.each(mergeMap, function(key, bundle) {
             if (operation(bundle.hasOwnProperty('left'), bundle.hasOwnProperty('right'))) {
