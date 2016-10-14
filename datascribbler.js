@@ -915,7 +915,7 @@ var recalculateAtom = function(atom) {
                         }
                     }
                     if (atoms[args[0]].type == 'number' && atoms[args[1]].type == 'number') {
-                        data = atoms[args[0]].data + atoms[args[1]].data;
+                        data = atoms[args[0]].data * atoms[args[1]].data;
                     }
                     if (atoms[args[0]].type == 'number' && data === undefined) {
                         data = atoms[args[0]].data;

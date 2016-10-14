@@ -9,7 +9,7 @@ This project powers https://datascribbler.com/
 
 by Jeff Tyrrill -- [email] | [@datascribbler][twitter]
 
-v0.9.0.1
+v0.9.0.2
 
 # Server requirements
 - Apache
